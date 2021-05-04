@@ -15,17 +15,18 @@ jobs:
       - name: Generate Tag
         id: gentag
         run: |
-          VERSION=sha-${GITHUB_SHA::8}
+          VERSION=${GITHUB_SHA::8}
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF/refs\/tags\//}
           fi
+          echo ::set-output name=BRANCH::$(echo ${GITHUB_REF#refs/heads/})
           echo ::set-output name=BUILD_DATE::$(date +%s | tr -d '\n')
           echo ::set-output name=VERSION::${VERSION}
       - name: Kaniko Build and Publish
         uses: aevea/action-kaniko@master
         with:
           image: dopsdemo/vote
-          tag: ${{ steps.gentag.outputs.VERSION }}-${{ steps.gentag.outputs.BUILD_DATE }}
+          tag: ${{ steps.gentag.outputs.BRANCH }}-${{ steps.gentag.outputs.VERSION }}-${{ steps.gentag.outputs.BUILD_DATE }}
           path: ./vote
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
