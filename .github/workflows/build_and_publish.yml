@@ -2,7 +2,7 @@ name: Build and Publish Vote Image
 
 on:
   push:
-    tags: 'main'
+    tags: '*'
 
 jobs:
   release:
