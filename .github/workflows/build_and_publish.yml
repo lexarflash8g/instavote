@@ -19,7 +19,7 @@ jobs:
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF/refs\/tags\//}
           fi
-          echo ::set-output name=BUILD_DATE::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          echo ::set-output name=BUILD_DATE::$(date +%s | tr -d '\n')
           echo ::set-output name=VERSION::${VERSION}
       - name: Kaniko Build and Publish
         uses: aevea/action-kaniko@master
