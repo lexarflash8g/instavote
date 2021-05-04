@@ -2,29 +2,18 @@ name: Build and Publish Vote Image
 
 on:
   push:
-    tags: '*'
+    branches:
+      - main
+    paths:
+      - 'vote/**'
 
 jobs:
-  release:
+  image-build-publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v1
-        with:
-          platforms: all
-      - name: Setup Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-        with:
-          buildkitd-flags: "--debug"
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Prepare
-        id: prep
+      - uses: actions/checkout@master
+      - name: Generate Tag
+        id: gentag
         run: |
           VERSION=sha-${GITHUB_SHA::8}
           if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -32,20 +21,14 @@ jobs:
           fi
           echo ::set-output name=BUILD_DATE::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
           echo ::set-output name=VERSION::${VERSION}
-      - name: Publish multi-arch image
-        uses: docker/build-push-action@v2
+      - name: Kaniko Build and Publish
+        uses: aevea/action-kaniko@master
         with:
-          push: true
-          builder: ${{ steps.buildx.outputs.name }}
-          context: ./vote
-          file: ./Dockerfile
-          platforms: linux/amd64
-          tags: |
-            docker.io/dopsdemo/vote:${{ steps.prep.outputs.VERSION }}
-            docker.io/dopsdemo/vote:latest
-          labels: |
-            org.opencontainers.image.source=${{ github.event.repository.html_url }}
-            org.opencontainers.image.url=${{ github.event.repository.html_url }}
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.version=${{ steps.prep.outputs.VERSION }}
-            org.opencontainers.image.created=${{ steps.prep.outputs.BUILD_DATE }}
+          image: dopsdemo/vote
+          tag: ${{ steps.gentag.outputs.VERSION }}-${{ steps.gentag.outputs.BUILD_DATE }
+          path: ./vote
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          cache: true
+          cache_registry: dopsdemo/votecache
+
