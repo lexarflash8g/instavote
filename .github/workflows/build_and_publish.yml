@@ -25,7 +25,7 @@ jobs:
         uses: aevea/action-kaniko@master
         with:
           image: dopsdemo/vote
-          tag: ${{ steps.gentag.outputs.VERSION }}-${{ steps.gentag.outputs.BUILD_DATE }
+          tag: ${{ steps.gentag.outputs.VERSION }}-${{ steps.gentag.outputs.BUILD_DATE }}
           path: ./vote
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
