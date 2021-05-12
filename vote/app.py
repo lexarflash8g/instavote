@@ -8,7 +8,7 @@ import json
 option_a = os.getenv('OPTION_A', "AAA")
 option_b = os.getenv('OPTION_B', "BBB")
 hostname = socket.gethostname()
-version = 'v12'
+version = 'v20'
 
 app = Flask(__name__)
 
