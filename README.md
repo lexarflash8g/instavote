@@ -1,6 +1,8 @@
 Example Voting (Instavote) App
 =========
 
+Added change
+
 Getting started
 ---------------
 
