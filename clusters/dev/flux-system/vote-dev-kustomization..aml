@@ -1,0 +1,26 @@
+The export sub-commands export resources in YAML format.
+
+Usage:
+  flux export [command]
+
+Available Commands:
+  alert          Export Alert resources in YAML format
+  alert-provider Export Provider resources in YAML format
+  helmrelease    Export HelmRelease resources in YAML format
+  image          Export image automation objects
+  kustomization  Export Kustomization resources in YAML format
+  receiver       Export Receiver resources in YAML format
+  source         Export sources
+
+Flags:
+      --all    select all resources
+  -h, --help   help for export
+
+Global Flags:
+      --context string      kubernetes context to use
+      --kubeconfig string   absolute path to the kubeconfig file
+  -n, --namespace string    the namespace scope for this operation (default "flux-system")
+      --timeout duration    timeout for this operation (default 5m0s)
+      --verbose             print generated objects
+
+Use "flux export [command] --help" for more information about a command.
