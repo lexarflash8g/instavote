@@ -11,7 +11,6 @@ replicas:
 images:
   - name: schoolofdevops/vote
     newTag: v4 
-    newName: lfs269/vote
 namespace: instavote
 commonLabels:
   project: instavote
