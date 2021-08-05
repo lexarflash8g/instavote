@@ -10,7 +10,7 @@ spec:
       chart: ./deploy/charts/result
       sourceRef:
         kind: GitRepository
-        name: vote
+        name: instavote
   install: {}
   interval: 10m0s
   targetNamespace: default
