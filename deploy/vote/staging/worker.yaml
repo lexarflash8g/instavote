@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: woerk
+    app: worker
   name: worker
 spec:
   minReadySeconds: 20
